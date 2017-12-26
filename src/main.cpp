@@ -45,6 +45,10 @@ int main()
 
 #else
 
+  // After Tuning Process
+  //pid.Init(0.44,0.03,2.75, true);
+
+  // These parameters give smooth motion however it's not the best accuracy
   pid.Init(0.3,0.01,2, true);
 
 #endif
@@ -125,13 +129,13 @@ int main()
         	  pid.abs_sum_cte = 0;
         	  pid.prev_cte = 0;
 
-        	  if(pid.best_err < 0.2 || pid.TotalError() < 0.5)
+        	  if(pid.TotalError() < 0.5)
         	  {
         		  pid.istrained = true;
         		  pid.Kp = pid.Kp_best;
         		  pid.Ki = pid.Ki_best;
         		  pid.Kd = pid.Kd_best;
-        		  pid.steps = 50;
+        		  pid.steps = 35;
         	  }
         	  std::string reset_msg = "42[\"reset\",{}]";
         	  ws.send(reset_msg.data(), reset_msg.length(), uWS::OpCode::TEXT);
