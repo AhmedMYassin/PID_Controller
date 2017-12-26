@@ -3,7 +3,9 @@
 ## Overview
 In this project, PID controller is used to control the steering angle and the throttle valve of a simulated vehicle. Twiddle algorithm is used to select the control paramters (P, I, D). 
 
-I used Udaicty silmulator to test and run the project. After tuning the control parameters, the final values are `0.3, 0.01, 2`. To reduce the time of tuning the parameters, I added termination conditions when the vehicle gets out of the track and when it stucks somewhere. 
+I used Udaicty silmulator to test and run the project. After tuning the control parameters, the final values are `0.44, 0.03, 2.75`. However these values give the least accuracy, the motion isn't smooth, it's aggressive somehow so I can use also these values `0.3, 0.01, 2` for good accuracy and smooth motion. 
+
+To reduce the time of tuning the parameters, I added termination conditions when the vehicle gets out of the track and when it stucks somewhere. 
 
 To avoid the constant speed problem escpecially in track curves, I used another pid controller for the throttle valve value. This helps alot to control the veicle in curves.
 
