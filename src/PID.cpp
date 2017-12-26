@@ -10,7 +10,7 @@ PID::PID() {}
 
 PID::~PID() {}
 
-void PID::Init(double Kp, double Ki, double Kd) {
+void PID::Init(double Kp, double Ki, double Kd, bool istraind) {
 
 	this->Kp = Kp;
 	this->Ki = Ki;
@@ -20,11 +20,11 @@ void PID::Init(double Kp, double Ki, double Kd) {
 	this->Ki_best = Ki;
 	this->Kd_best = Kd;
 
-	p_error = 0.25;
-	i_error = 0.0;
+	p_error = 0.2;
+	i_error = 0.01;
 	d_error = 1;
-	steps = 0;
-	istrained = false;
+	this->istrained = istrained;
+	steps = istrained? 35 : 0;
 	mode = PID_normal_mode;
 
 	prev_cte = 0;
@@ -89,13 +89,13 @@ void PID::UpdateError(double cte) {
 				Kd_best = Kd;
 				d_error *= 1.25;
 
-				/*
 				Ki += i_error;
 				mode = I_high_mode;
-				*/
 
+				/*
 				Kp += p_error;
 				mode = P_high_mode;
+				*/
 
 			}
 			else
@@ -118,16 +118,17 @@ void PID::UpdateError(double cte) {
 				d_error *= 0.75;
 			}
 
-			/*
+
 			Ki += i_error;
 			mode = I_high_mode;
-			*/
 
+			/*
 			Kp += p_error;
 			mode = P_high_mode;
+			*/
 
 			break;
-/*
+
 		case I_high_mode:
 			if(cte < best_err)
 			{
@@ -162,7 +163,7 @@ void PID::UpdateError(double cte) {
 			mode = P_high_mode;
 
 			break;
-*/
+
 		default:
 			break;
 	}

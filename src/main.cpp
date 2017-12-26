@@ -4,6 +4,8 @@
 #include "PID.h"
 #include <math.h>
 
+//#define TUNING_MODE
+
 // for convenience
 using json = nlohmann::json;
 
@@ -36,10 +38,16 @@ int main()
 
 
   // TODO: Initialize the pid variable.
-  pid.Init(0.1,0,2);
 
-  //pid.Init(0.1,0,1);
-  //pid.istrained = true;
+#ifdef TUNING_MODE
+
+  pid.Init(0.1,0,2, false);
+
+#else
+
+  pid.Init(0.3,0.01,2, true);
+
+#endif
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
@@ -66,7 +74,7 @@ int main()
           * another PID controller to control the speed!
           */
           
-          if(pid.steps > 100 && (speed < 2 || cte > 12.0))
+          if(pid.steps > 80 && (speed < 2 || cte > 12.0))
           {
            	 out_of_track = true;
           }
@@ -74,7 +82,7 @@ int main()
           // DEBUG
           //std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
 
-          if(pid.steps < 50)
+          if(pid.steps < 35)
           {
         	  throttle_value = -(0.1 * (speed - 25));
         	  json msgJson;
@@ -84,7 +92,7 @@ int main()
         	  //std::cout << msg << std::endl;
         	  ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
           }
-          else if(pid.steps >= 50 && pid.steps < 800 && !out_of_track)
+          else if(pid.steps >= 35 && pid.steps < 800 && !out_of_track)
           {
         	  pid.sum_cte += cte;
         	  pid.abs_sum_cte += fabs(cte);
@@ -108,8 +116,8 @@ int main()
               }
         	  else
         	  {
-        		  pid.UpdateError((pid.abs_sum_cte/(pid.steps - 50)));
-        		  std::cout << "Average Error: " << (pid.abs_sum_cte/(pid.steps - 50)) << " Best Error: " << pid.best_err << std::endl;
+        		  pid.UpdateError((pid.abs_sum_cte/(pid.steps - 35)));
+        		  std::cout << "Average Error: " << (pid.abs_sum_cte/(pid.steps - 35)) << " Best Error: " << pid.best_err << std::endl;
         	  }
 
         	  pid.steps = 0;
