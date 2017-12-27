@@ -30,13 +30,11 @@ std::string hasData(std::string s) {
   return "";
 }
 
-PID pid;
-
 int main()
 {
   uWS::Hub h;
 
-
+  static PID pid; 
   // TODO: Initialize the pid variable.
 
 #ifdef TUNING_MODE
@@ -55,7 +53,7 @@ int main()
 
 #endif
 
-  h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
+  h.onMessage([](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
@@ -69,7 +67,7 @@ int main()
           // j[1] is the data JSON object
           double cte = std::stod(j[1]["cte"].get<std::string>());
           double speed = std::stod(j[1]["speed"].get<std::string>());
-          double angle = std::stod(j[1]["steering_angle"].get<std::string>());
+          //double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
           double throttle_value;
           bool out_of_track = false;
