@@ -1,7 +1,11 @@
 # CarND-Controls-PID
 
 ## Overview
-In this project, PID controller is used to control the steering angle and the throttle valve of a simulated vehicle. Twiddle algorithm is used to select the control paramters (P, I, D). 
+In this project, PID controller is used to control the steering angle and the throttle valve of a simulated vehicle. Twiddle algorithm is used to select the control paramters (P, I, D).  
+
+`P` The proportional factor is the main helper for getting the vehicle back to the track.
+`D` The derivative factor helps to prevent the vehicle from going away from the track center due to overshooting. It helps alot to keep the motion smooth.
+`I` The integral factor value is so small as the steering angle in the vehicle has no effective systimatic bias.
 
 I used Udaicty silmulator to test and run the project. After tuning the control parameters, the final values are `0.44, 0.03, 2.75`. However these values give the least accuracy, the motion isn't smooth, it's aggressive somehow so I can use also these values `0.3, 0.01, 2` for good accuracy and smooth motion. 
 
