@@ -41,15 +41,17 @@ int main()
 
 #ifdef TUNING_MODE
 
-  pid.Init(0.1,0,2, false);
+  pid.istuned = false;
+  pid.Init(0.1,0,2);
 
 #else
 
+  pid.istuned = true;
   // After Tuning Process
-  //pid.Init(0.44,0.03,2.75, true);
+  //pid.Init(0.44,0.03,2.75);
 
   // These parameters give smooth motion however it's not the best accuracy
-  pid.Init(0.3,0.01,2, true);
+  pid.Init(0.3,0.01,2);
 
 #endif
 
@@ -131,17 +133,17 @@ int main()
 
         	  if(pid.TotalError() < 0.5)
         	  {
-        		  pid.istrained = true;
+        		  pid.istuned = true;
         		  pid.Kp = pid.Kp_best;
         		  pid.Ki = pid.Ki_best;
         		  pid.Kd = pid.Kd_best;
-        		  pid.steps = 35;
+        		  pid.steps = 50;
         	  }
         	  std::string reset_msg = "42[\"reset\",{}]";
         	  ws.send(reset_msg.data(), reset_msg.length(), uWS::OpCode::TEXT);
           }
 
-          if(!pid.istrained)
+          if(!pid.istuned)
           {
         	  pid.steps++;
           }
@@ -173,7 +175,7 @@ int main()
   h.onConnection([&h](uWS::WebSocket<uWS::SERVER> ws, uWS::HttpRequest req) {
     std::cout << "Connected!!!" << std::endl;
 
-    if(pid.istrained)
+    if(pid.istuned)
     {
     	std::cout << "Model is trained" << std::endl;
     }

@@ -1,4 +1,5 @@
 #include "PID.h"
+#include <iostream>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ PID::PID() {}
 
 PID::~PID() {}
 
-void PID::Init(double Kp, double Ki, double Kd, bool istraind) {
+void PID::Init(double Kp, double Ki, double Kd) {
 
 	this->Kp = Kp;
 	this->Ki = Ki;
@@ -23,8 +24,8 @@ void PID::Init(double Kp, double Ki, double Kd, bool istraind) {
 	p_error = 0.2;
 	i_error = 0.01;
 	d_error = 1;
-	this->istrained = istrained;
-	steps = istrained? 35 : 0;
+
+	steps = istuned? 35 : 0;
 	mode = PID_normal_mode;
 
 	prev_cte = 0;

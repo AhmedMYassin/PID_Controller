@@ -16,7 +16,7 @@ public:
 
   double best_err;
   int steps;
-  bool istrained;
+  bool istuned;
   enum PID_mode { PID_normal_mode, P_high_mode, P_low_mode, D_high_mode, D_low_mode, I_high_mode, I_low_mode} mode;
 
   /*
@@ -43,7 +43,7 @@ public:
   /*
   * Initialize PID.
   */
-  void Init(double Kp, double Ki, double Kd, bool istrained);
+  void Init(double Kp, double Ki, double Kd);
 
   /*
   * Update the PID error variables given cross track error.
